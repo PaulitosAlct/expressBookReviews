@@ -73,6 +73,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     } else {
         return res.status(404).json({message: `ISBN ${isbn} not found`});
     }
+    
 });
 
 // Delete a book review
@@ -83,7 +84,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     if (books[isbn]) {
         let book = books[isbn];
         if (book.reviews && book.reviews[username]) {
-            delete book.review[username];
+            delete book.reviews[username];
             return res.status(200).send("Review deleted successfully");
         } else {
             return res.status(404).json({message: "No review by this user to delete"});
