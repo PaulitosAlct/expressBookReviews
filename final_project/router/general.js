@@ -84,4 +84,27 @@ public_users.get('/review/:isbn',function (req, res) {
   }
 });
 
+// Task 10 - get book list with promise callbacks
+function getBookList() {
+    return new Promise((resolve, reject) => {
+        if (books) {
+            resolve(books);
+        } else {
+            reject("No books availabe");
+        }
+    });
+}
+
+public_users.get('/books', (req, res) => {
+    getBookList()
+    .then(bookList => {
+        res.status(200).json(bookList);
+    })
+    .catch(error => {
+        res.status(500).json({message: error});
+    });
+});
+
+/
+
 module.exports.general = public_users;
