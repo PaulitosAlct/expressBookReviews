@@ -105,6 +105,27 @@ public_users.get('/books', (req, res) => {
     });
 });
 
-/
+// Task 11 - get book details  based on ISBN with promises
+function getBookByISBN(isbn) {
+    return new Promise((resolve, reject) => {
+        if (books[isbn]) {
+            resolve(books[isbn]);
+        } else {
+            reject(`Book with the ISBN ${isbn} not found`);
+        }
+    });
+}
+
+public_users.get('/book/:isbn', (req, res) => {
+    const isbn = req.params.isbn;
+
+    getBookByISBN(isbn)
+    .then(book => {
+        res.status(200).json(book);
+    })
+    .catch(error => {
+        res.status(404).json({message: error});
+    });
+});
 
 module.exports.general = public_users;
