@@ -105,7 +105,7 @@ public_users.get('/books', (req, res) => {
     });
 });
 
-// Task 11 - get book details  based on ISBN with promises
+// Task 11 - get book details  based on ISBN with promises callbacks
 function getBookByISBN(isbn) {
     return new Promise((resolve, reject) => {
         if (books[isbn]) {
@@ -127,5 +127,30 @@ public_users.get('/book/:isbn', (req, res) => {
         res.status(404).json({message: error});
     });
 });
+
+// Task 12 - get book details based on author with promises callbacks
+function getBooksByAuthor(author) {
+    return new Promise((resolve, reject) =>{
+        const filteredBooks = Object.values(books).filter(book => book.author === author);
+
+        if (filteredBooks.length > 0) {
+            resolve(filteredBooks);
+        } else {
+            reject(`No books found for author: ${author}`);
+        }
+    } );
+}
+
+public_users.get('/books/author/:author', (req, res) => {
+    const author = req.params.author;
+
+    getBooksByAuthor(author)
+    .then(booksByAuthor => {
+        res.status(200).json(booksByAuthor);
+    })
+    .catch( error => {
+        res.status(404).json({message: error})
+    })
+})
 
 module.exports.general = public_users;
