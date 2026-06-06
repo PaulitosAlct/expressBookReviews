@@ -149,8 +149,35 @@ public_users.get('/books/author/:author', (req, res) => {
         res.status(200).json(booksByAuthor);
     })
     .catch( error => {
-        res.status(404).json({message: error})
+        res.status(404).json({message: error});
+    });
+});
+
+// Task 13 - get book details based on title with promises callbacks
+function getBooksByTitle(title) {
+    return new Promise((resolve, reject) =>{
+        const filteredBooks = Object.values(books).filter(book => book.title === title);
+
+        if (filteredBooks.length > 0) {
+            resolve(filteredBooks);
+        } else {
+            reject(`No books found for title: ${title}`);
+        }
+    } );
+}
+
+public_users.get('/books/title/:title', (req, res) => {
+    const title = req.params.title;
+
+    getBooksByTitle(title)
+    .then(booksByTitle => {
+        res.status(200).json(booksByTitle);
     })
-})
+    .catch( error => {
+        res.status(404).json({message: error});
+    });
+});
+
+
 
 module.exports.general = public_users;
